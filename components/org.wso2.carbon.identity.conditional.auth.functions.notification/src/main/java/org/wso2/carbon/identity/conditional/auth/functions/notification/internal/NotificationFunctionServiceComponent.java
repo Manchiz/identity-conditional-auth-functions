@@ -30,6 +30,8 @@ import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.identity.application.authentication.framework.JsFunctionRegistry;
 import org.wso2.carbon.identity.conditional.auth.functions.notification.SendEmailFunction;
 import org.wso2.carbon.identity.conditional.auth.functions.notification.SendEmailFunctionImpl;
+import org.wso2.carbon.identity.conditional.auth.functions.notification.SendSMSFunction;
+import org.wso2.carbon.identity.conditional.auth.functions.notification.SendSMSFunctionImpl;
 import org.wso2.carbon.identity.event.services.IdentityEventService;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.user.core.service.RealmService;
@@ -50,9 +52,14 @@ public class NotificationFunctionServiceComponent {
     @Activate
     protected void activate(ComponentContext ctxt) {
 
-        SendEmailFunction sendEmailFunction = new SendEmailFunctionImpl();
         JsFunctionRegistry jsFunctionRegistry = NotificationFunctionServiceHolder.getInstance().getJsFunctionRegistry();
+
+        SendEmailFunction sendEmailFunction = new SendEmailFunctionImpl();
         jsFunctionRegistry.register(JsFunctionRegistry.Subsystem.SEQUENCE_HANDLER, "sendEmail", sendEmailFunction);
+
+        SendSMSFunction sendSMSFunction = new SendSMSFunctionImpl();
+        jsFunctionRegistry.register(JsFunctionRegistry.Subsystem.SEQUENCE_HANDLER, "sendSMS", sendSMSFunction);
+
     }
 
     @Deactivate
